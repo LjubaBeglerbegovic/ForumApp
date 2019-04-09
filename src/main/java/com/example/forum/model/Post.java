@@ -1,5 +1,7 @@
 package com.example.forum.model;
 
+import java.util.Date;
+
 import javax.persistence.*;
 
 import lombok.Data;
@@ -18,6 +20,7 @@ public class Post {
 		
 		this.subject = subject;
 		this.message = message;
+		this.creationDate = new Date();
 	}
 	
 	@GeneratedValue
@@ -26,6 +29,7 @@ public class Post {
 	@NonNull
 	private String subject;
 	private String message;
+	private Date creationDate;
 	
 	public String getId() {
 		if(id==null) {
