@@ -1,6 +1,7 @@
 package com.example.forum.model;
 
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.*;
 
@@ -13,16 +14,6 @@ import lombok.NonNull;
 @Entity
 public class Post {
 	
-	public Post(String subject, String message) {
-		if(message == null) {
-			throw new NullPointerException("Message must not be null!");
-		}
-		
-		this.subject = subject;
-		this.message = message;
-		this.creationDate = new Date();
-	}
-	
 	@GeneratedValue
 	@Id
 	private Long id;
@@ -30,6 +21,15 @@ public class Post {
 	private String subject;
 	private String message;
 	private Date creationDate;
+	
+	@OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+    private Set<Comment> comments;
+	
+	public Post(String subject, String message) {		
+		this.subject = subject;
+		this.message = message;
+		this.creationDate = new Date();
+	}
 	
 	public String getId() {
 		if(id==null) {
