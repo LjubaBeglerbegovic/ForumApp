@@ -1,5 +1,7 @@
 package com.example.forum.controllers;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
@@ -38,6 +40,12 @@ public class PostController{
 		Optional<Post> post = postRepository.findById(id);
 		return post.map(response-> ResponseEntity.ok().body(response))
 				.orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+	}
+	
+	@PostMapping("/post")
+	ResponseEntity<?> createPost(@Valid @RequestBody Post post)throws URISyntaxException{
+		Post newPost = postRepository.save(post);
+		return ResponseEntity.created(new URI("forum/post/" + newPost.getId())).body(newPost);
 	}
 	
 	@PutMapping("/comment/{id}")

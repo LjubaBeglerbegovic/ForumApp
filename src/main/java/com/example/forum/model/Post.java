@@ -20,7 +20,7 @@ public class Post {
 	@NonNull
 	private String subject;
 	private String message;
-	private Date creationDate;
+	private Date creationDate = new Date();
 	
 	@OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
     private Set<Comment> comments;
@@ -28,7 +28,6 @@ public class Post {
 	public Post(String subject, String message) {		
 		this.subject = subject;
 		this.message = message;
-		this.creationDate = new Date();
 	}
 	
 	public String getId() {
