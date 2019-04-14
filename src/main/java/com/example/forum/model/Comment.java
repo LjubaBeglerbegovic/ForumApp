@@ -19,11 +19,10 @@ public class Comment {
 	private Long id;
 	@NonNull
 	private String commentText;
-	private Date postDate;
+	private Date postDate = new Date();
 	
 	public Comment(String commentText) {
 		this.commentText = commentText;
-		this.postDate = new Date();
 	}
 	
 	public String getId() {
