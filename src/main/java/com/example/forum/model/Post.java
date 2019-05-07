@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,9 +19,12 @@ public class Post {
 	@Id
 	private Long id;
 	@NonNull
+	@NotEmpty
 	private String subject;
 	private String message;
 	private Date creationDate = new Date();
+	@Lob
+	private byte[] image;
 	
 	@OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
     private Set<Comment> comments;

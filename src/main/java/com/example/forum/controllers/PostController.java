@@ -1,9 +1,9 @@
 package com.example.forum.controllers;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
 
@@ -12,6 +12,7 @@ import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.forum.model.Comment;
 import com.example.forum.model.CommentRepository;
@@ -46,6 +47,31 @@ public class PostController{
 	ResponseEntity<?> createPost(@Valid @RequestBody Post post)throws URISyntaxException{
 		Post newPost = postRepository.save(post);
 		return ResponseEntity.created(new URI("forum/post/" + newPost.getId())).body(newPost);
+		
+	}
+	
+	@PostMapping("/post/{postId}/image")
+	ResponseEntity<Post> addPostImage(@PathVariable Long postId, @RequestParam("file") MultipartFile file){
+		try {
+		    Optional<Post> post = postRepository.findById(postId);
+
+		    byte[] byteObjects = new byte[file.getBytes().length];
+
+		    int i = 0;
+
+		    for (byte b : file.getBytes()){
+		        byteObjects[i++] = b;
+		    }
+
+		    post.get().setImage(byteObjects);
+
+		    postRepository.save(post.get());
+		    return post.map(response -> ResponseEntity.ok().body(response))
+	                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+		} catch (IOException e) {
+		    e.printStackTrace();
+		    return null;
+		}
 	}
 	
 	@PutMapping("/comment/{id}")
